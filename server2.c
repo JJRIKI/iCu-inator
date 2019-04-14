@@ -35,6 +35,10 @@ int main()
     show_message(sd);
 
     //send(sd, "Blake", sizeof("Blake"), 0);
+    if (recv(sd,100,0))
+    {
+      /* code */
+    }
 
     close(sd);
   }
@@ -68,7 +72,6 @@ int obtain_socket(int port)
   
   return(sockfd);
 }
-
 
 void show_message(int sd)
 /* Print the incoming text to stdout */

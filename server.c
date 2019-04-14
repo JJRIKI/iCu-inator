@@ -36,6 +36,7 @@ int main()
 
     //send(sd, "Blake", sizeof("Blake"), 0);
 
+
     close(sd);
   }
   return 0;
@@ -69,7 +70,6 @@ int obtain_socket(int port)
   return(sockfd);
 }
 
-
 void show_message(int sd)
 /* Print the incoming text to stdout */
 {
@@ -78,6 +78,10 @@ void show_message(int sd)
 
   while ((no = read(sd, buf, SIZE)) > 0)
     write(1, buf, no);    /* write to stdout */
+
+  if (recv(sd, buf,100,0)){
+      printf("TODO: insert userid, name of access point/switch to which you are currently directly attached\n");
+  }
 }
 
 
