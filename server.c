@@ -16,11 +16,16 @@ void close_down(int sigtype);
 #define SIZE 512           /* max length of character string */
 
 int ssockfd;     /* socket for PORT; global for close_down() */
+char userid[20];
 
 int main()
 {
   int sd, client_len;
   struct sockaddr_in client;
+  
+
+  printf("Enter UserID: \n");
+  scanf("%s", userid); 
 
   signal(SIGINT, close_down);    /* use close_down() to terminate */
 
@@ -74,13 +79,16 @@ void show_message(int sd)
 /* Print the incoming text to stdout */
 {
   char buf[SIZE];
+  char whoAreU[512] = "Who are you?\n";
+
   int no;
 
   while ((no = read(sd, buf, SIZE)) > 0)
     write(1, buf, no);    /* write to stdout */
 
-  if (recv(sd, buf,100,0)){
-      printf("TODO: insert userid, name of access point/switch to which you are currently directly attached\n");
+  if (whoAreU == buf){
+      //printf("TODO: insert userid, name of access point/switch to which you are currently directly attached\n");
+      printf("%s vl-1a-wap3\n", userid);
   }
 }
 
