@@ -87,7 +87,7 @@ void show_message(int sd)
     write(1, buf, no);    /* write to stdout */
 
   if (whoAreU == buf){
-      //printf("TODO: insert userid, name of access point/switch to which you are currently directly attached\n");
+      //printf("TODO: implement name of access point/switch to which you are currently directly attached");
       printf("%s vl-1a-wap3\n", userid);
   }
 }
