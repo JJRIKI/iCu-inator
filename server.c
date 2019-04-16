@@ -14,6 +14,10 @@ void close_down(int sigtype);
 
 #define PORT 28900          /* default port for server */
 #define SIZE 512           /* max length of character string */
+//#define CMD 'grabWap'
+
+
+
 
 int ssockfd;     /* socket for PORT; global for close_down() */
 char userid[20];
@@ -88,6 +92,8 @@ void show_message(int sd)
 
   if (whoAreU == buf){
       //printf("TODO: implement name of access point/switch to which you are currently directly attached");
+      
+      //grabWap(sd, %);
       printf("%s vl-1a-wap3\n", userid);
   }
 }
