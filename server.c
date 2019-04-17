@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -14,7 +15,7 @@ void close_down(int sigtype);
 
 #define PORT 28900          /* default port for server */
 #define SIZE 512           /* max length of character string */
-//#define CMD 'grabWap'
+#define CMD 'grabWap'
 
 
 
@@ -33,7 +34,7 @@ int main()
 
   signal(SIGINT, close_down);    /* use close_down() to terminate */
 
-  printf("Listen starting on port %d\n", PORT);
+  printf("Started listening on port %d\n", PORT);
   ssockfd = obtain_socket(PORT);
   while(1) {
     client_len = sizeof(client);
@@ -79,6 +80,9 @@ int obtain_socket(int port)
   return(sockfd);
 }
 
+
+
+
 void show_message(int sd)
 /* Print the incoming text to stdout */
 {
@@ -90,18 +94,50 @@ void show_message(int sd)
   while ((no = read(sd, buf, SIZE)) > 0)
     write(1, buf, no);    /* write to stdout */
 
+
+
+
   if (whoAreU == buf){
-      //printf("TODO: implement name of access point/switch to which you are currently directly attached");
+    //printf("TODO: implement name of access point/switch to which you are currently directly attached");
       
-      //grabWap(sd, %);
-      printf("%s vl-1a-wap3\n", userid);
+    // helper to access cmd line and hopefully use bssid list to grab current wap info
+
+      char* bssids = "bssids.txt";
+      char *ssockfd = ssockfd;
+      int i = 0;
+      
+      FILE *grabWap = popen("/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport | grep BSSID | awk '{print $2}''", "r");
+      fgets(buf, sizeof(buf), grabWap);
+
+      grabWap = fopen(bssids, "r");
+      if (grabWap == NULL){
+        printf("Could not access bssids", bssids);
+
+        fclose(bssids);
+        
+      }
+
+      while(bssids[i]) {
+          if(strcmp(bssids[i], ssockfd) == 0) {
+              printf("Here is the name of the WAP!\n");
+              break;
+           }
+           i++;
+      }
+
+      pclose(grabWap);
+
+      printf("%s \n", userid);
   }
 }
 
 
 void close_down(int sigtype)
-/* Close socket connection to PORT when ctrl-C is typed */
+/* Close socket connection to PORT when ctrl-C is typed and exits to shell */
 {
+
+  printf("Stopped listening\n");
   close(ssockfd);
-  printf("Listen terminated\n");
+  exit(0);
+
 }
